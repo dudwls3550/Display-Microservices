@@ -1,0 +1,92 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+#<<< API Gateway / Routes
+      routes:
+        - id: UserManagement
+          uri: http://localhost:8082
+          predicates:
+            - Path=/permissions/**, /users/**, /userLists/**, /permissionCatalogs/**, /userAccessProfiles/**, /userDetails/**, /permissionDetails/**
+        - id: ExternalIntegration
+          uri: http://localhost:8083
+          predicates:
+            - Path=/externalNotifications/**, /externalIntegrationClients/**, /clientConfigurations/**, /externalContentLists/**, /notificationLogs/**, /clientLists/**
+        - id: SystemMonitoring
+          uri: http://localhost:8084
+          predicates:
+            - Path=/statistics/**, /systemLogs/**, /abnormalEvents/**, /systemLogLists/**, /abnormalEventHistories/**, /operationalStatistics/**, /statisticsSummaries/**, /systemLogDetails/**, /abnormalEventAlerts/**
+        - id: ContentManagement
+          uri: http://localhost:8085
+          predicates:
+            - Path=/metadata/**, /contents/**, /contentApprovals/**, /contentLists/**, /contentSearchIndices/**, /pendingApprovalLists/**, /contentDetails/**, /approvalHistories/**, /metadataSummaries/**
+        - id: ui
+          uri: http://localhost:8086
+          predicates:
+            - Path=, 
+        - id: frontend
+          uri: http://localhost:8080
+          predicates:
+            - Path=/**
+#>>> API Gateway / Routes
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: UserManagement
+          uri: http://userManagement:8080
+          predicates:
+            - Path=/permissions/**, /users/**, 
+        - id: ExternalIntegration
+          uri: http://externalIntegration:8080
+          predicates:
+            - Path=/externalNotifications/**, /externalIntegrationClients/**, 
+        - id: SystemMonitoring
+          uri: http://systemMonitoring:8080
+          predicates:
+            - Path=/statistics/**, /systemLogs/**, /abnormalEvents/**, 
+        - id: ContentManagement
+          uri: http://contentManagement:8080
+          predicates:
+            - Path=/metadata/**, /contents/**, /contentApprovals/**, 
+        - id: ui
+          uri: http://ui:8080
+          predicates:
+            - Path=, 
+        - id: frontend
+          uri: http://frontend:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080

@@ -1,0 +1,285 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: UserManagement
+  labels:
+    app: UserManagement
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: UserManagement
+  template:
+    metadata:
+      labels:
+        app: UserManagement
+    spec:
+      containers:
+        - name: UserManagement
+          image: username/UserManagement:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ExternalIntegration
+  labels:
+    app: ExternalIntegration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ExternalIntegration
+  template:
+    metadata:
+      labels:
+        app: ExternalIntegration
+    spec:
+      containers:
+        - name: ExternalIntegration
+          image: username/ExternalIntegration:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: SystemMonitoring
+  labels:
+    app: SystemMonitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: SystemMonitoring
+  template:
+    metadata:
+      labels:
+        app: SystemMonitoring
+    spec:
+      containers:
+        - name: SystemMonitoring
+          image: username/SystemMonitoring:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ContentManagement
+  labels:
+    app: ContentManagement
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ContentManagement
+  template:
+    metadata:
+      labels:
+        app: ContentManagement
+    spec:
+      containers:
+        - name: ContentManagement
+          image: username/ContentManagement:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui
+  labels:
+    app: ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+        - name: ui
+          image: username/ui:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: UserManagement
+  labels:
+    app: UserManagement
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: UserManagement
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ExternalIntegration
+  labels:
+    app: ExternalIntegration
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: ExternalIntegration
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: SystemMonitoring
+  labels:
+    app: SystemMonitoring
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: SystemMonitoring
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ContentManagement
+  labels:
+    app: ContentManagement
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: ContentManagement
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui
+  labels:
+    app: ui
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: ui
+
